@@ -1,5 +1,12 @@
 (function() {
 
+  function brightness(color) {
+    var red = parseInt(color.substr(0,2), 16);
+    var green = parseInt(color.substr(2,2), 16);
+    var blue = parseInt(color.substr(4,2), 16);
+    return ((red*299) + (green*587) + (blue*114)) / 1000;
+  }
+
   angular.module('extension', [])
 
     .directive('listGroupItem', [function() {
@@ -50,6 +57,9 @@
         link: function(scope, element, attr) {
           element.text(scope.label.name);
           element.css('background-color', '#' + scope.label.color);
+          var light = brightness(scope.label.color) > 255/2;
+          element.css('color', light ? 'black' : 'white');
+          element.addClass(light ? 'darker' : 'lighter');
         }
       };
     }]);
