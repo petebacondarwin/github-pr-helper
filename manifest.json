@@ -7,8 +7,8 @@
 
   "permissions": [  ],
   "content_scripts": [{
-    "matches": ["https://github.com/*/pulls*"],
+    "matches": ["https://github.com/*/pull*"],
     "css": ["styles.css"],
-    "js": ["lib/angular.js", "extension.js"]
+    "js": ["lib/angular.js", "labels.js", "listGroupItems.js", "discussionSidebar.js", "extension.js"]
   }]
 }
