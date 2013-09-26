@@ -13,11 +13,42 @@ angular.module('labels', [])
 }])
 
 // Get a list of labels for a given pull request
-.factory('getLabels', ['$http', 'gitHubUrl', function($http, gitHubUrl) {
-  return function(prNumber) {
+.factory('getLabelsFor', ['$http', 'gitHubUrl', function($http, gitHubUrl) {
+  return function getLabelsFor(prNumber) {
     prNumber = prNumber || gitHubUrl.prNumber;
     return $http.get('https://api.github.com/repos/'+ gitHubUrl.owner +'/' + gitHubUrl.repos + '/issues/' + prNumber + '/labels')
       .then(function(response) { return response.data; });
+  };
+}])
+
+
+.factory('getAllLabels', ['$http', 'gitHubUrl', function($http, gitHubUrl) {
+  return function getAllLabels() {
+    return $http.get('https://api.github.com/repos/' + gitHubUrl.owner + '/' + gitHubUrl.repos + '/labels')
+      .then(function(response) { return response.data; });
+  };
+}])
+
+
+.factory('getCheckedLabelsFor', ['getAllLabels', 'getLabelsFor', '$q', function(getAllLabels, getLabelsFor, $q) {
+  return function getAllLabelsCheckedFor(prNumber) {
+    return $q.all([getAllLabels(), getLabelsFor(prNumber)]).then(function(results) {
+      var allLabels = results[0];
+      var prLabels = results[1];
+      var checkLabel = function (url) {
+        for (var i = allLabels.length - 1; i >= 0; i--) {
+          if ( allLabels[i].url == url ) {
+            allLabels[i].checked = true;
+            break;
+          }
+        }
+      };
+      angular.forEach(prLabels, function(label) {
+        checkLabel(label.url);
+      });
+
+      return allLabels;
+    });
   };
 }])
 
