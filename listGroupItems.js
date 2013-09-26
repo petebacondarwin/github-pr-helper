@@ -23,7 +23,6 @@ angular.module('listGroupItems', ['labels'])
     return {
       restrict: 'C',
       link: function(scope, element, attrs, listGroupItem) {
-        console.log(element.text());
         scope.listGroupItem.number = element.text().substr(1);
         getLabels(scope.listGroupItem.number).then(function(labels) {
           scope.listGroupItem.labels = labels;
