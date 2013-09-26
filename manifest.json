@@ -9,6 +9,12 @@
   "content_scripts": [{
     "matches": ["https://github.com/*/pull*"],
     "css": ["styles.css"],
-    "js": ["lib/angular.js", "labels.js", "listGroupItems.js", "discussionSidebar.js", "extension.js"]
+    "js": [
+      "lib/angular.js",
+      "src/labels.js",
+      "src/listGroupItems.js",
+      "src/discussionSidebar.js",
+      "src/extension.js"
+    ]
   }]
 }
