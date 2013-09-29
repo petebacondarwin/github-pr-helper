@@ -1,22 +1,26 @@
-angular.module('labels', [])
+angular.module('labels', ['auth'])
 
 // At the moment this service only works once per application
 // TODO: get watching the location working
 .factory('gitHubUrl', ['$rootScope', '$location', function($rootScope, $location) {
   var gitHubUrlRegex = /^https?:\/\/github.com\/([^\/]+)\/([^\/]+)\/pull(?:s|\/(\d+))/;
   var parts = gitHubUrlRegex.exec($location.absUrl());
-  return {
+  var gitHubUrl = {
     owner: parts[1],
     repos: parts[2],
-    prNumber: parts[3]
+    prNumber: parts[3],
   };
+  gitHubUrl.getAPIUrl = function() {
+    return 'https://api.github.com/repos/'+ gitHubUrl.owner +'/' + gitHubUrl.repos;
+  };
+  return gitHubUrl;
 }])
 
 // Get a list of labels for a given pull request
 .factory('getLabelsFor', ['$http', 'gitHubUrl', function($http, gitHubUrl) {
   return function getLabelsFor(prNumber) {
     prNumber = prNumber || gitHubUrl.prNumber;
-    return $http.get('https://api.github.com/repos/'+ gitHubUrl.owner +'/' + gitHubUrl.repos + '/issues/' + prNumber + '/labels')
+    return $http.get(gitHubUrl.getAPIUrl() + '/issues/' + prNumber + '/labels')
       .then(function(response) { return response.data; });
   };
 }])
@@ -24,7 +28,7 @@ angular.module('labels', [])
 
 .factory('getAllLabels', ['$http', 'gitHubUrl', function($http, gitHubUrl) {
   return function getAllLabels() {
-    return $http.get('https://api.github.com/repos/' + gitHubUrl.owner + '/' + gitHubUrl.repos + '/labels')
+    return $http.get(gitHubUrl.getAPIUrl() + '/labels')
       .then(function(response) { return response.data; });
   };
 }])
@@ -48,6 +52,23 @@ angular.module('labels', [])
       });
 
       return allLabels;
+    });
+  };
+}])
+
+
+.factory('updateLabel', ['$http', 'gitHubUrl', 'authInfo', function($http, gitHubUrl, authInfo) {
+  return function(label) {
+    console.log("label changed: ", label);
+    return $http({
+      method: label.checked ? 'PUT' : 'DELETE',
+      headers: {
+        'Accept': '*/*;q=0.5, text/javascript, application/javascript, application/ecmascript, application/x-ecmascript',
+        'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
+        'X-CSRF-Token': authInfo.authenticity_token
+      },
+      url: 'https://github.com/'+ gitHubUrl.owner +'/' + gitHubUrl.repos + '/issues/labels/modify_assignment',
+      data: "issues%5B%5D="+gitHubUrl.prNumber+"&labels%5B%5D="+label.name
     });
   };
 }])

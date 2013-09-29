@@ -28,13 +28,23 @@ angular.module('discussionSidebar', ['labels'])
     };
   }])
 
-  .directive('labelManager', [function() {
+  .directive('labelManager', ['updateLabel', function(updateLabel) {
     return {
       restrict: 'E',
       replace: true,
       link: function(scope) {
+        scope.updateFilteredLabels = function() {
+          console.log(scope.labels);
+          scope.filteredLabels = scope.labels;
+          scope.labelsLoading = false;
+        };
         scope.filteredLabels = [];
         scope.labelsLoading = true;
+        scope.$watch('labels', scope.updateFilteredLabels);
+        scope.toggleLabel = function(label) {
+          label.checked = !label.checked;
+          updateLabel(label);
+        };
       },
       template:
 '<div class="label-manager">' +
@@ -64,8 +74,8 @@ angular.module('discussionSidebar', ['labels'])
         '</div> <!-- /.select-menu-filters -->' +
 
         '<div class="select-menu-list">' +
-          '<div class="select-menu-item" ng-repeat="label in filteredLabels" ng-class="{selected : label.checked}">' +
-            '<span class="select-menu-item-icon octicon octicon-checklabel}" ></span>' +
+          '<div class="select-menu-item" ng-repeat="label in filteredLabels" ng-class="{selected : label.checked}" ng-click="toggleLabel(label)">' +
+            '<span class="select-menu-item-icon octicon octicon-check" ></span>' +
             '<div class="select-menu-item-text">' +
               '<div class="color-label-wrapper">' +
                 '<div class="color-label" >' +

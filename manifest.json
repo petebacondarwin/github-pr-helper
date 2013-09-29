@@ -11,6 +11,7 @@
     "css": ["styles.css"],
     "js": [
       "lib/angular.js",
+      "src/auth.js",
       "src/labels.js",
       "src/listGroupItems.js",
       "src/discussionSidebar.js",
