@@ -51,7 +51,7 @@ angular.module('listGroupItems', ['labels'])
       // which will be picked up by and filled by the label directive
       template: 
         '<span>' +
-        '  <gh-label ng-repeat="label in listGroupItem.labels" class="label"></gh-label>' +
+        '  <gh-label ng-repeat="label in listGroupItem.labels" class="label" label="label"></gh-label>' +
         '</span>'
     };
   }]);

@@ -100,7 +100,7 @@ angular.module('prDetailView', ['labels'])
           '  <label-manager></label-manager>' +
           '  <ul class="color-label-list filter-list small">' +
           '    <li ng-repeat="label in labels">' +
-          '      <gh-label ng-if="label.checked" class="filter-item color-label"></gh-label>' +
+          '      <gh-label label="label" ng-if="label.checked" class="filter-item color-label"></gh-label>' +
           '    </li>' + 
           '  </ul>' +
           '</div>')(scope));

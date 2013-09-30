@@ -59,7 +59,6 @@ angular.module('labels', ['CSRF'])
 
 .factory('updateLabel', ['$http', 'gitHubUrl', function($http, gitHubUrl) {
   return function(label) {
-    console.log("label changed: ", label);
     return $http({
       method: label.checked ? 'PUT' : 'DELETE',
       headers: {
@@ -89,6 +88,7 @@ angular.module('labels', ['CSRF'])
   return {
     restrict: 'E',
     replace: true,
+    scope: { label: '=' },
     template: '<span title="{{label.name}}">{{label.name}}</span>',
     link: function(scope, element, attrs) {
       // Set the colour of the label
