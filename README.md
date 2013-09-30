@@ -28,3 +28,22 @@ repository.
 
 Make sure that the extension is enabled and then browse to your favourite Pull Request list, say
 https://github.com/angular/angular.js/pulls
+
+## Testing
+The tests are stored in the `/tests` folder and are written in Jasmine, using the ngMocks extensions
+to AngularJS.  You run the tests using the [Karma Test Runner](http://karma-runner.github.io/0.10/).
+
+### Install Karma
+This project uses karma 0.10.x release. Get the karma utility from npm:
+
+```
+npm install -g karma@0.10.x
+```
+### Run the tests
+The configuration is in the `karma.conf.js` file.  Run the tests with the karma utility:
+
+```
+karma start
+```
+
+This should open up a browser and then run the tests.
