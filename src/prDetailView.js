@@ -33,6 +33,8 @@ angular.module('prDetailView', ['labels'])
     };
   })
 
+  
+
   // We have to do this work at the head element, since we can't stop the compiler from
   // interpolating the current element's attributes, even if the element cotains a directive
   // set to terminal!
