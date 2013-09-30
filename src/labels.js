@@ -2,7 +2,7 @@ angular.module('labels', ['CSRF'])
 
 // At the moment this service only works once per application
 // TODO: get watching the location working
-.factory('gitHubUrl', ['$rootScope', '$location', function($rootScope, $location) {
+.factory('gitHubUrl', ['$location', function($location) {
   var gitHubUrlRegex = /^https?:\/\/github.com\/([^\/]+)\/([^\/]+)\/pull(?:s|\/(\d+))/;
   var parts = gitHubUrlRegex.exec($location.absUrl());
   var gitHubUrl = {
