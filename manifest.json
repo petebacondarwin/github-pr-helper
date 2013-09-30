@@ -11,11 +11,14 @@
     "css": ["styles.css"],
     "js": [
       "lib/angular.js",
-      "src/auth.js",
+      "src/CSRF.js",
       "src/labels.js",
       "src/listGroupItems.js",
-      "src/discussionSidebar.js",
+      "src/prDetailView.js",
       "src/extension.js"
     ]
-  }]
+  }],
+  "web_accessible_resources": [
+    "lib/jquery-2.0.3.min.map"
+  ]
 }
