@@ -8,7 +8,7 @@ angular.module('labels', ['CSRF'])
   var gitHubUrl = {
     owner: parts[1],
     repos: parts[2],
-    prNumber: parts[3],
+    prNumber: parts[3]
   };
   gitHubUrl.getAPIUrl = function() {
     return 'https://api.github.com/repos/'+ gitHubUrl.owner +'/' + gitHubUrl.repos;
@@ -16,19 +16,25 @@ angular.module('labels', ['CSRF'])
   return gitHubUrl;
 }])
 
+
+.value('githubAuth', {
+  client_id: localStorage.getItem('github.client_id'),
+  client_secret: localStorage.getItem('github.client_secret')
+})
+
 // Get a list of labels for a given pull request
-.factory('getLabelsFor', ['$http', 'gitHubUrl', function($http, gitHubUrl) {
+.factory('getLabelsFor', ['$http', 'gitHubUrl', 'githubAuth', function($http, gitHubUrl, githubAuth) {
   return function getLabelsFor(prNumber) {
     prNumber = prNumber || gitHubUrl.prNumber;
-    return $http.get(gitHubUrl.getAPIUrl() + '/issues/' + prNumber + '/labels')
+    return $http.get(gitHubUrl.getAPIUrl() + '/issues/' + prNumber + '/labels', { params: githubAuth})
       .then(function(response) { return response.data; });
   };
 }])
 
 
-.factory('getAllLabels', ['$http', 'gitHubUrl', function($http, gitHubUrl) {
+.factory('getAllLabels', ['$http', 'gitHubUrl', 'githubAuth', function($http, gitHubUrl, githubAuth) {
   return function getAllLabels() {
-    return $http.get(gitHubUrl.getAPIUrl() + '/labels')
+    return $http.get(gitHubUrl.getAPIUrl() + '/labels', { params: githubAuth})
       .then(function(response) { return response.data; });
   };
 }])
@@ -57,7 +63,7 @@ angular.module('labels', ['CSRF'])
 }])
 
 
-.factory('updateLabel', ['$http', 'gitHubUrl', function($http, gitHubUrl) {
+.factory('updateLabel', ['$http', 'gitHubUrl', 'githubAuth', function($http, gitHubUrl, githubAuth) {
   return function(label) {
     return $http({
       method: label.checked ? 'PUT' : 'DELETE',
@@ -66,7 +72,8 @@ angular.module('labels', ['CSRF'])
         'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
       },
       url: 'https://github.com/'+ gitHubUrl.owner +'/' + gitHubUrl.repos + '/issues/labels/modify_assignment',
-      data: "issues%5B%5D="+gitHubUrl.prNumber+"&labels%5B%5D="+label.name
+      data: "issues%5B%5D="+gitHubUrl.prNumber+"&labels%5B%5D="+label.name,
+      params: githubAuth
     });
   };
 }])
