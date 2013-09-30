@@ -1,4 +1,4 @@
-describe('CSRF', function() {
+describe('CSRF module', function() {
   describe('meta directive', function() {
     beforeEach(module('CSRF'));
     it('reads the CSRF meta tag and updates the default $http headers', inject(function($compile, $rootScope, $http) {
