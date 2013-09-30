@@ -18,7 +18,7 @@
             $form = $(this).closest("form"),
             input = $(this).find("input[type=checkbox]"),
             params = {
-                    type: n.is(":checked") ? "put" : "delete",
+                    type: input.is(":checked") ? "put" : "delete",
                     data: {
                         "issues[]": e.find(".js-issue-number").val(),
                         "labels[]": n.val()
