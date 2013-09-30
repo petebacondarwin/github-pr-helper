@@ -1,8 +1,7 @@
 (function() {
-  angular.module('extension', ['listGroupItems', 'discussionSidebar']);
+  angular.module('extension', ['listGroupItems', 'prDetailView']);
 
   // Bootstrap the application
-  var container = angular.element(document.getElementsByClassName('container'));
-  angular.bootstrap(container, ['extension']);
+  angular.bootstrap(document, ['extension']);
 
 })();

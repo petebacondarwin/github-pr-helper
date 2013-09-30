@@ -19,12 +19,12 @@ angular.module('listGroupItems', ['labels'])
 
   // At the moment the best place to get the PR number is by scraping it from an element
   // with list-group-item-number class.
-  .directive('listGroupItemNumber', ['getLabels', function(getLabels) {
+  .directive('listGroupItemNumber', ['getLabelsFor', function(getLabelsFor) {
     return {
       restrict: 'C',
-      link: function(scope, element, attrs, listGroupItem) {
+      link: function(scope, element, attrs) {
         scope.listGroupItem.number = element.text().substr(1);
-        getLabels(scope.listGroupItem.number).then(function(labels) {
+        getLabelsFor(scope.listGroupItem.number).then(function(labels) {
           scope.listGroupItem.labels = labels;
         });
       }
