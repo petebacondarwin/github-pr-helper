@@ -114,7 +114,6 @@ angular.module('prDetailView', ['labels'])
       replace: true,
       link: function(scope) {
         scope.updateFilteredLabels = function() {
-          console.log(scope.labels);
           scope.filteredLabels = scope.labels;
           scope.labelsLoading = false;
         };
