@@ -29,6 +29,21 @@ repository.
 Make sure that the extension is enabled and then browse to your favourite Pull Request list, say
 https://github.com/angular/angular.js/pulls
 
+## Github API request limiting
+The extension makes calls to https://api.github.com.  This has a limit of 60 requests per hour for
+unauthenticated clients.  To get around this the extension will check for a GitHub `client_id` and
+`client_secret` in your localStorage.  If this is there then it will authenticate its requests with
+this information.
+
+Add your own `client_id` and `client_secret` to your localStorage by navigating to a github page,
+opening the developer console, and entering the following, replacing the .... with your own
+credentials:
+
+```
+localStorage.setItem('github.client_id', "....");
+localStorage.setItem('github.client_secret', "....");
+```
+
 ## Testing
 The tests are stored in the `/tests` folder and are written in Jasmine, using the ngMocks extensions
 to AngularJS.  You run the tests using the [Karma Test Runner](http://karma-runner.github.io/0.10/).
