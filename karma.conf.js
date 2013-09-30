@@ -18,6 +18,7 @@ module.exports = function(config) {
       'lib/angular-mocks.js',
 
       'src/CSRF.js',
+      'src/labels.js',
       
       'tests/*.spec.js'
     ],
