@@ -1,4 +1,4 @@
-angular.module('labels', ['auth'])
+angular.module('labels', ['CSRF'])
 
 // At the moment this service only works once per application
 // TODO: get watching the location working
@@ -57,7 +57,7 @@ angular.module('labels', ['auth'])
 }])
 
 
-.factory('updateLabel', ['$http', 'gitHubUrl', 'authInfo', function($http, gitHubUrl, authInfo) {
+.factory('updateLabel', ['$http', 'gitHubUrl', function($http, gitHubUrl) {
   return function(label) {
     console.log("label changed: ", label);
     return $http({
@@ -65,7 +65,6 @@ angular.module('labels', ['auth'])
       headers: {
         'Accept': '*/*;q=0.5, text/javascript, application/javascript, application/ecmascript, application/x-ecmascript',
         'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
-        'X-CSRF-Token': authInfo.authenticity_token
       },
       url: 'https://github.com/'+ gitHubUrl.owner +'/' + gitHubUrl.repos + '/issues/labels/modify_assignment',
       data: "issues%5B%5D="+gitHubUrl.prNumber+"&labels%5B%5D="+label.name
