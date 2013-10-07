@@ -17,7 +17,7 @@ angular.module('flashMessages', [])
     },
     template: 
       '<div ng-repeat="msg in flashMessages" class="flash flash-{{msg.type}}">' +
-        '<div class="close" ng-click="flashMessages.splice(flashMessages.indexOf(msg),1)">X</div>' +
+        '<div class="close octicon octicon-x" ng-click="flashMessages.splice(flashMessages.indexOf(msg),1)"></div>' +
         '{{msg.text}}' +
       '</div>'
   };
