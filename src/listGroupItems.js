@@ -47,7 +47,16 @@ angular.module('listGroupItems', ['labels', 'githubAPI'])
   }])
 
 
-
+  .directive('listGroupItemMeta', ['$compile', function($compile) {
+    return {
+      restrict: 'C',
+      link: function(scope, element, attrs) {
+        element.append($compile(
+          '<li ng-if="issue.milestone" class="milestone"><span class="octicon octicon-milestone"></span> Milestone: {{issue.milestone.title}}</li>'
+        )(scope));
+      }
+    };
+  }]);
 
 
 })();
