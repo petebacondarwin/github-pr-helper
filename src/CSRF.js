@@ -1,5 +1,8 @@
 angular.module('CSRF', [])
 
+
+// This directive strips the CSRF token from the `<meta>` tag in the HTML `<head>`
+// and adds it as a default header to all $http PUT and DELETE requests
 .directive('meta', ['$http', '$log', function($http, $log) {
   return {
     restrict: 'E',

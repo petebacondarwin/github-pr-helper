@@ -11,10 +11,14 @@
     "css": ["styles.css"],
     "js": [
       "lib/angular.js",
+
       "src/CSRF.js",
+      "src/githubAPI.js",
       "src/labels.js",
       "src/listGroupItems.js",
       "src/prDetailView.js",
+      "src/terminateCompilation.js",
+
       "src/extension.js"
     ]
   }],

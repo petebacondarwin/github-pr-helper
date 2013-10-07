@@ -17,16 +17,16 @@ module.exports = function(config) {
       'lib/angular.js',
       'lib/angular-mocks.js',
 
-      'src/CSRF.js',
-      'src/labels.js',
+      'src/*.js',
       
+      'tests/*.mock.js',
       'tests/*.spec.js'
     ],
 
 
     // list of files to exclude
     exclude: [
-      'extension.js'
+      'src/extension.js'
     ],
 
 

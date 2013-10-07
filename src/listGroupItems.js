@@ -1,6 +1,6 @@
 (function() {
 
-angular.module('listGroupItems', ['labels'])
+angular.module('listGroupItems', ['labels', 'githubAPI'])
 
 
   // Each item sits inside a list-group-item div.  This directive creates a new scope
@@ -19,12 +19,12 @@ angular.module('listGroupItems', ['labels'])
 
   // At the moment the best place to get the PR number is by scraping it from an element
   // with list-group-item-number class.
-  .directive('listGroupItemNumber', ['getLabelsFor', function(getLabelsFor) {
+  .directive('listGroupItemNumber', ['githubAPI', function(githubAPI) {
     return {
       restrict: 'C',
       link: function(scope, element, attrs) {
         scope.listGroupItem.number = element.text().substr(1);
-        getLabelsFor(scope.listGroupItem.number).then(function(labels) {
+        githubAPI.getLabelsFor(scope.listGroupItem.number).then(function(labels) {
           scope.listGroupItem.labels = labels;
         });
       }
