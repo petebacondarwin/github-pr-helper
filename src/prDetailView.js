@@ -25,12 +25,12 @@ angular.module('prDetailView', ['labels', 'githubAPI'])
     };
   }])
 
-  .directive('labelManager', ['githubAPI', function(githubAPI) {
+  .directive('labelManager', ['githubAPI', 'orderByFilter', function(githubAPI, orderByFilter) {
     return {
       restrict: 'C',
       link: function(scope) {
         scope.updateFilteredLabels = function() {
-          scope.filteredLabels = scope.labels;
+          scope.filteredLabels = orderByFilter(scope.labels, 'name');
           scope.labelsLoading = false;
         };
         scope.filteredLabels = [];
