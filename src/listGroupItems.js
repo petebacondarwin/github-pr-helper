@@ -9,9 +9,9 @@ angular.module('listGroupItems', ['labels', 'githubAPI'])
   .directive('listGroupItem', [function() {
     return {
       restrict: 'C',
-      scope: true,
+      scope: {},
       controller: function($scope) { 
-        $scope.listGroupItem = {};
+        //TODO: destroy the scope when this element is removed by GitHub
       }
     };
   }])
@@ -23,9 +23,9 @@ angular.module('listGroupItems', ['labels', 'githubAPI'])
     return {
       restrict: 'C',
       link: function(scope, element, attrs) {
-        scope.listGroupItem.number = element.text().substr(1);
-        githubAPI.getLabelsFor(scope.listGroupItem.number).then(function(labels) {
-          scope.listGroupItem.labels = labels;
+        var number = element.text().substr(1);
+        githubAPI.getIssue(number).then(function(issue) {
+          scope.issue = issue;
         });
       }
     };
@@ -37,23 +37,17 @@ angular.module('listGroupItems', ['labels', 'githubAPI'])
     return {
       restrict: 'C',
       link: function(scope, element, attrs) {
-        element.append($compile('<gh-inline-labels class="labels"></gh-inline-labels>')(scope));
+        element.append($compile(
+        '<span class="labels">' +
+        '  <gh-label ng-repeat="label in issue.labels" class="label" label="label"></gh-label>' +
+        '</span>'
+        )(scope));
       }
     };
   }])
 
 
-  .directive('ghInlineLabels', [function(){
-    return {
-      restrict: 'E',
-      replace: true,
-      // Simply repeat over the labels that have been downloaded creating a label span,
-      // which will be picked up by and filled by the label directive
-      template: 
-        '<span>' +
-        '  <gh-label ng-repeat="label in listGroupItem.labels" class="label" label="label"></gh-label>' +
-        '</span>'
-    };
-  }]);
+
+
 
 })();

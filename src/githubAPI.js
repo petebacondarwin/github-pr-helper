@@ -67,12 +67,12 @@ angular.module('githubAPI', ['CSRF', 'flashMessages'])
 // Get a list of labels for a given pull request
 .factory('githubAPI', ['$http', 'githubUrl', 'githubAuth', '$q', function($http, githubUrl, githubAuth, $q) {
   var githubAPI = {
-    getLabelsFor: function(prNumber) {
+    getIssue: function(prNumber) {
       if (githubAuth.rateLimitReached) {
         return $q.reject('rate limit reached');
       }
       prNumber = prNumber || githubUrl.prNumber;
-      return $http.get(githubUrl.getAPIUrl() + '/issues/' + prNumber + '/labels', { params: githubAuth.params })
+      return $http.get(githubUrl.getAPIUrl() + '/issues/' + prNumber, { params: githubAuth.params })
         .then(function(response) { return response.data; });
     },
     getAllLabels: function() {
@@ -85,9 +85,9 @@ angular.module('githubAPI', ['CSRF', 'flashMessages'])
   // Get a list of all the labels in the repository with the `checked` property set to true for each
   // label that is applied to the specified PR/issue
     getCheckedLabels: function() {
-      return $q.all([githubAPI.getAllLabels(), githubAPI.getLabelsFor(githubUrl.prNumber)]).then(function(results) {
+      return $q.all([githubAPI.getAllLabels(), githubAPI.getIssue(githubUrl.prNumber)]).then(function(results) {
         var allLabels = results[0];
-        var prLabels = results[1];
+        var prLabels = results[1].labels;
         var checkLabel = function (url) {
           for (var i = allLabels.length - 1; i >= 0; i--) {
             if ( allLabels[i].url == url ) {
@@ -103,6 +103,8 @@ angular.module('githubAPI', ['CSRF', 'flashMessages'])
         return allLabels;
       });
     },
+    // This method will update the labels for the current issue
+    // NOTE: It uses an undocumented request that is not on api.github.com
     updateLabel: function(label) {
       if (githubAuth.rateLimitReached) {
         return $q.reject('rate limit reached');

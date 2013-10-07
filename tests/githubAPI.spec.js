@@ -52,24 +52,26 @@ describe('githubAPI module', function() {
         { name: 'feature', url: 'label/feature' },
         { name: 'question', url: 'label/question' }
       ]);
-      $httpBackend.whenGET('https://api.github.com/repos/angular/angular.js/issues/7654/labels?').respond([
-        { name: 'bug', url: 'label/bug' },
-        { name: 'question', url: 'label/question' }
-      ]);
+      $httpBackend.whenGET('https://api.github.com/repos/angular/angular.js/issues/7654?').respond({
+        labels: [
+          { name: 'bug', url: 'label/bug' },
+          { name: 'question', url: 'label/question' }
+        ]
+      });
       $httpBackend.whenPUT('https://github.com/angular/angular.js/issues/labels/modify_assignment?').respond([]);
       $httpBackend.whenDELETE('https://github.com/angular/angular.js/issues/labels/modify_assignment?').respond([]);
     }));
 
 
-    describe('getLabelsFor service', function() {
+    describe('getIssue service', function() {
 
-      it('retrieves the labels for the given PR from the API', inject(function(githubAPI, $rootScope, $httpBackend) {
-        $httpBackend.expectGET('https://api.github.com/repos/angular/angular.js/issues/7654/labels?');
+      it('retrieves the info for the given Issue/PR from the API', inject(function(githubAPI, $rootScope, $httpBackend) {
+        $httpBackend.expectGET('https://api.github.com/repos/angular/angular.js/issues/7654?');
 
         $rootScope.$apply(function() {
-          githubAPI.getLabelsFor(7654).then(function(labels) {
-            expect(labels.length).toEqual(2);
-            expect(labels[1].name).toEqual('question');
+          githubAPI.getIssue(7654).then(function(issue) {
+            expect(issue.labels.length).toEqual(2);
+            expect(issue.labels[1].name).toEqual('question');
           });
         });
     
@@ -101,7 +103,7 @@ describe('githubAPI module', function() {
 
       it('retrieves all the labels from the API and marks the ones that are on the given PR', inject(function(githubAPI, githubUrl, $rootScope, $httpBackend) {
         $httpBackend.expectGET('https://api.github.com/repos/angular/angular.js/labels?');
-        $httpBackend.expectGET('https://api.github.com/repos/angular/angular.js/issues/7654/labels?');
+        $httpBackend.expectGET('https://api.github.com/repos/angular/angular.js/issues/7654?');
 
         githubUrl.prNumber = 7654;
 
