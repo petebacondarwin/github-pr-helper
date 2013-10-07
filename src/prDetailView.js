@@ -4,7 +4,7 @@ angular.module('prDetailView', ['labels', 'githubAPI'])
   .directive('discussionSidebar', ['githubAPI', '$compile', function(githubAPI, $compile) {
     return {
       restrict: 'C',
-      scope: true,
+      scope: {},
       link: function(scope, element, attrs) {
 
         githubAPI.getCheckedLabels().then(function(labels) {
@@ -15,15 +15,25 @@ angular.module('prDetailView', ['labels', 'githubAPI'])
         element.append($compile(
           '<div class="discussion-labels">' +
           '  <div class="label-manager"></div>' +
-          '  <ul class="color-label-list filter-list small">' +
-          '    <li ng-repeat="label in labels">' +
-          '      <gh-label label="label" ng-if="label.checked" class="filter-item color-label"></gh-label>' +
-          '    </li>' + 
-          '  </ul>' +
+          '  <label-list labels="labels"></label-list>' +
           '</div>')(scope));
       }
     };
   }])
+
+  .directive('labelList', function() {
+    return {
+      restrict: 'E',
+      replace: true,
+      scope: { labels: '='},
+      template: 
+        '  <ul class="color-label-list filter-list small">' +
+        '    <li ng-repeat="label in labels | filter : {checked: true}">' +
+        '      <gh-label label="label" class="filter-item color-label"></gh-label>' +
+        '    </li>' + 
+        '  </ul>'
+    };
+  })
 
   .directive('labelManager', ['githubAPI', 'orderByFilter', function(githubAPI, orderByFilter) {
     return {
