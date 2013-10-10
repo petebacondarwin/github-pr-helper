@@ -21,26 +21,4 @@ angular.module('flashMessages', [])
         '{{msg.text}}' +
       '</div>'
   };
-}])
-
-
-// The pullsList and viewPullRequest directives, simply hook into the HTML that is provided by
-// GitHub and inject a flash-messages element
-.directive('pullsList', function() {
-  return {
-    restrict: 'C',
-    compile: function(element) {
-      element.prepend('<div class="flash-messages"></div>');
-    }
-  };
-})
-
-.directive('viewPullRequest', function() {
-  return {
-    restrict: 'C',
-    compile: function(element) {
-      element.prepend('<div class="flash-messages"></div>');
-    }
-  };
-});
-
+}]);

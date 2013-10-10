@@ -1,25 +1,6 @@
 describe('flashMessages module', function() {
+
   beforeEach(module('flashMessages'));
-
-  describe('pullsList directive', function() {
-
-    it('adds a flash messages tag to its children', inject(function($compile, $rootScope) {
-      var element = $compile('<div class="pulls-list"></div>')($rootScope);
-      expect(element.children().length).toEqual(1);
-      expect(element.children().eq(0).hasClass('flash-messages')).toBeTruthy();
-    }));
-  });
-
-
-  describe('viewPullRequest directive', function() {
-
-    it('adds a flash messages tag to its children', inject(function($compile, $rootScope) {
-      var element = $compile('<div class="view-pull-request"></div>')($rootScope);
-      expect(element.children().length).toEqual(1);
-      expect(element.children().eq(0).hasClass('flash-messages')).toBeTruthy();
-    }));
-  });
-
 
   describe('flashMessages directive', function() {
     beforeEach(inject(function(flashMessages) {
