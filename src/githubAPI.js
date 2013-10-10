@@ -1,7 +1,7 @@
 // The labels module is the main service for interacting with the GitHub API
 // we declare a dependency on the CSRF because we want its directive to scrape the CSRF token
 // from the meta tags
-angular.module('githubAPI', ['CSRF', 'flashMessages'])
+angular.module('githubAPI', ['CSRFScraper', 'flashMessages'])
 
 .config(['$httpProvider', function($httpProvider) {
   $httpProvider.interceptors.push(function(githubAuth, $q) {
