@@ -2,12 +2,20 @@
   "manifest_version": 2,
 
   "name": "GitHub PR Helper",
-  "description": "This adds sorely needed features to GitHub's PR pages.",
-  "version": "1.0",
+  "description": "View and manage labels in GitHub Pull Request views.",
+  "version": "0.1",
+  "icons": {
+    "16": "icon-16.png",
+    "48": "icon-48.png",
+    "128": "icon-128.png"
+  },
+  "author": "Pete Bacon Darwin",
 
   "permissions": [  ],
+
   "content_scripts": [{
     "matches": ["https://github.com/*/pull*"],
+
     "css": ["styles.css"],
     "js": [
       "lib/angular.js",
@@ -24,6 +32,7 @@
       "src/extension.js"
     ]
   }],
+
   "web_accessible_resources": [
     "lib/jquery-2.0.3.min.map"
   ]
