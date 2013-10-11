@@ -7,7 +7,7 @@ angular.module('githubAPI', ['CSRFScraper', 'flashMessages'])
   $httpProvider.interceptors.push(function(githubAuth, $q) {
     return {
       'responseError': function(rejection) {
-        if (rejection.status === 403 && !(githubAuth.params.client_id || githubAuth.params.client_secret)) {
+        if (rejection.status === 403 && !(githubAuth.getCredentials().client_id || githubAuth.getCredentials().client_secret)) {
           githubAuth.rateLimitReached = true;
         }
         throw $q.reject();
@@ -41,14 +41,33 @@ angular.module('githubAPI', ['CSRFScraper', 'flashMessages'])
 // it is needed to prevent the API request limiting from blocking requests
 .factory('githubAuth', ['$rootScope', 'flashMessages', function($rootScope, flashMessages) {
   var githubAuth = {
-    params : {
-      client_id: localStorage.getItem('github.client_id'),
-      client_secret: localStorage.getItem('github.client_secret')
-    },
     rateLimitReached: false,
     requestLimitMessage: {
       text: 'You have reached the api request limit. Please add GitHub client credentials to localStorage',
       type: 'warn'
+    },
+    credentialsFormVisible: function() {
+      return !sessionStorage.getItem('github.hideCredentialsForm') && !githubAuth.hasCredentials();
+    },
+    hideCredentialsForm: function() {
+      sessionStorage.setItem('github.hideCredentialsForm', true);
+    },
+    showCredentialsForm: function() {
+      sessionStorage.removeItem('github.hideCredentialsForm');
+    },
+    getCredentials: function() {
+      return {
+        client_id: localStorage.getItem('github.client_id'),
+        client_secret: localStorage.getItem('github.client_secret')
+      };
+    },
+    hasCredentials: function() {
+      var credentials = githubAuth.getCredentials();
+      return !!(credentials.client_id && credentials.client_secret);
+    },
+    storeCredentials: function(client_id, client_secret) {
+      localStorage.setItem('github.client_id', client_id);
+      localStorage.setItem('github.client_secret', client_secret);
     }
   };
 
@@ -56,6 +75,7 @@ angular.module('githubAPI', ['CSRFScraper', 'flashMessages'])
     function() { return githubAuth.rateLimitReached; },
     function(value) {
       if ( value ) {
+        githubAuth.showCredentialsForm();
         flashMessages.push(githubAuth.requestLimitMessage);
       } else {
         flashMessages.splice(flashMessages.indexOf(githubAuth.requestLimitMessage), 1);
@@ -72,14 +92,14 @@ angular.module('githubAPI', ['CSRFScraper', 'flashMessages'])
         return $q.reject('rate limit reached');
       }
       prNumber = prNumber || githubUrl.prNumber;
-      return $http.get(githubUrl.getAPIUrl() + '/issues/' + prNumber, { params: githubAuth.params })
+      return $http.get(githubUrl.getAPIUrl() + '/issues/' + prNumber, { params: githubAuth.getCredentials() })
         .then(function(response) { return response.data; });
     },
     getAllLabels: function() {
       if (githubAuth.rateLimitReached) {
         return $q.reject('rate limit reached');
       }
-      return $http.get(githubUrl.getAPIUrl() + '/labels', { params: githubAuth.params})
+      return $http.get(githubUrl.getAPIUrl() + '/labels', { params: githubAuth.getCredentials()})
         .then(function(response) { return response.data; });
     },
   // Get a list of all the labels in the repository with the `checked` property set to true for each
@@ -117,7 +137,7 @@ angular.module('githubAPI', ['CSRFScraper', 'flashMessages'])
         },
         url: 'https://github.com/'+ githubUrl.owner +'/' + githubUrl.repos + '/issues/labels/modify_assignment',
         data: "issues%5B%5D="+githubUrl.prNumber+"&labels%5B%5D="+label.name,
-        params: githubAuth.params
+        params: githubAuth.getCredentials()
       });
     }
   };

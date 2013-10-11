@@ -1,8 +1,8 @@
-describe('prDetailView', function() {
+describe('discussionSidebar module', function() {
 
-  beforeEach(module('prDetailView'));
+  beforeEach(module('discussionSidebar'));
 
-  describe("discussionSidebar", function() {
+  describe("discussionSidebar directive", function() {
 
     it('appends a label list to the end of the current element', inject(function($compile, $rootScope) {
       var element = angular.element('<div class="discussion-sidebar"><div>Static Content</div></div>');
@@ -23,8 +23,4 @@ describe('prDetailView', function() {
     }));
   });
 
-  describe('labelManager directive', function() {
-
-    
-  });
 });

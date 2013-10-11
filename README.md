@@ -37,7 +37,12 @@ unauthenticated clients.  To get around this the extension will check for a GitH
 `client_secret` in your localStorage.  If this is there then it will authenticate its requests with
 this information.
 
-Add your own `client_id` and `client_secret` to your localStorage by navigating to a github page,
+To create your own credentials, you need to register an application with GitHub.
+* login to github
+* go to the Register New Application page: https://github.com/settings/applications/new
+* enter a name, url and callback url.
+
+Add your `client_id` and `client_secret` to your localStorage by navigating to a github page,
 opening the developer console, and entering the following, replacing the .... with your own
 credentials:
 

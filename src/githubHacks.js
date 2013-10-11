@@ -1,26 +1,26 @@
 (function() {
 
-angular.module('githubHacks', ['flashMessages'])
+angular.module('githubHacks', ['flashMessages', 'credentialsForm'])
 
 // The pullsList and viewPullRequest directives, simply hook into the HTML that is provided by
 // GitHub and inject a flash-messages element
 .directive('pullsList', addFlashMessageDirective)
 .directive('viewPullRequest', addFlashMessageDirective)
+.directive('pullsList', addCredentialsDirective)
+.directive('viewPullRequest', addCredentialsDirective)
 
 
-// We don't want angularjs interpolation that appears inside comments to be compiled
-// so this directive basically terminates compilation at the point where discussions
-// are rendered
-// (Unfortunately, GitHub also sticks content into a <meta property="og:description"> tag,
-// which also needs to be terminated)
+// We don't want code blocks that appear inside gitHub description and comment field to be compiled
+// so we terminates compilation at the point where these fields appear
 .directive('discussionTimeline', terminateCompilationDirective)
 .directive('diffView', terminateCompilationDirective)
 .directive('commit', terminateCompilationDirective)
 
   
-// We have to do this work at the head element, since we can't stop the compiler from
-// interpolating the current element's attributes, even if the element cotains a directive
-// set to terminal!
+// GitHub also puts code block containing fields into some <meta> tags, which also needs to be terminated
+// We have to do this work at the <head> tag, rather than the <meta> tag, since we can't stop the
+// angular compiler from interpolating the current element's attributes, even if the element contains
+// a directive set to terminal!
 .directive('head', function() {
   return {
     restrict: 'E',
@@ -67,7 +67,20 @@ function addFlashMessageDirective() {
   return {
     restrict: 'C',
     compile: function(element) {
-      element.prepend('<div class="flash-messages"></div>');
+      element.prepend(
+        '<credentials-form></credentials-form>'
+      );
+    }
+  };
+}
+
+function addCredentialsDirective() {
+  return {
+    restrict: 'C',
+    compile: function(element) {
+      element.prepend(
+        '<credentials-form></credentials-form>'
+      );
     }
   };
 }

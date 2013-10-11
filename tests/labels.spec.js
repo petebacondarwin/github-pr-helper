@@ -23,4 +23,17 @@ describe('labels module', function() {
       expect(element.hasClass('lighter')).toBeTruthy();
     }));
   });
+
+
+  describe('labelList directive', function() {
+
+    
+  });
+
+
+  describe('labelManager directive', function() {
+
+    
+  });
+
 });
