@@ -1,4 +1,4 @@
-angular.module('credentialsForm', [])
+angular.module('credentialsForm', ['githubAPI'])
 
 .directive('credentialsForm', ['githubAuth', function(githubAuth) {
   return {
@@ -11,7 +11,7 @@ angular.module('credentialsForm', [])
       };
       scope.hideForm = function() {
         githubAuth.hideCredentialsForm();
-      }
+      };
       scope.storeCredentials = function() {
         githubAuth.storeCredentials(scope.client_id, scope.client_secret);
       };
