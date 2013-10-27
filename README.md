@@ -34,22 +34,27 @@ https://github.com/angular/angular.js/pulls
 ## Github API request limiting
 The extension makes calls to https://api.github.com.  This has a limit of 60 requests per hour for
 unauthenticated clients.  To get around this the extension will check for a GitHub `client_id` and
-`client_secret` in your localStorage.  If this is there then it will authenticate its requests with
-this information.
+`client_secret` in your `localStorage`.  If this is there then it will use this to authenticate its
+requests to GitHub.
 
 To create your own credentials, you need to register an application with GitHub.
 * login to github
 * go to the Register New Application page: https://github.com/settings/applications/new
 * enter a name, url and callback url.
 
-Add your `client_id` and `client_secret` to your localStorage by navigating to a github page,
-opening the developer console, and entering the following, replacing the .... with your own
-credentials:
+You can manually add your `client_id` and `client_secret` to your localStorage:
+* navigate to any GitHub page (such as http://github.com/angular/angular.js)
+* open the Chrome developer console
+* enter the following JavaScript, replacing the .... with your own credentials:
 
 ```
 localStorage.setItem('github.client_id', "....");
 localStorage.setItem('github.client_secret', "....");
 ```
+
+Alternatively, when the extension realises that you are not authenticated and have over-run the
+request limit, it will display a form, where you can enter your `client_id` and `client_secret`
+directly.
 
 ## Known Issues
 GitHub sometimes uses partial reloads to update the page more efficiently.  For instance, when you
