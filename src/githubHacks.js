@@ -68,7 +68,7 @@ function addFlashMessageDirective() {
     restrict: 'C',
     compile: function(element) {
       element.prepend(
-        '<credentials-form></credentials-form>'
+        '<div class="flash-messages"></div>'
       );
     }
   };

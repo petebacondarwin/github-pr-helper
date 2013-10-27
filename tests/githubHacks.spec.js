@@ -6,20 +6,22 @@ describe("githubHacks module", function() {
   
     describe('pullsList directive', function() {
 
-      it('adds a flash messages tag to its children', inject(function($compile, $rootScope) {
+      it('adds flash-messages and credentials-form to its children', inject(function($compile, $rootScope) {
         var element = $compile('<div class="pulls-list"></div>')($rootScope);
-        expect(element.children().length).toEqual(1);
-        expect(element.children().eq(0).hasClass('flash-messages')).toBeTruthy();
+        expect(element.children().length).toEqual(2);
+        expect(element.children().eq(0).hasClass('flash')).toBeTruthy();
+        expect(element.children().eq(1).hasClass('flash-messages')).toBeTruthy();
       }));
     });
 
 
     describe('viewPullRequest directive', function() {
 
-      it('adds a flash messages tag to its children', inject(function($compile, $rootScope) {
+      it('adds flash-messages and credentials-form to its children', inject(function($compile, $rootScope) {
         var element = $compile('<div class="view-pull-request"></div>')($rootScope);
-        expect(element.children().length).toEqual(1);
-        expect(element.children().eq(0).hasClass('flash-messages')).toBeTruthy();
+        expect(element.children().length).toEqual(2);
+        expect(element.children().eq(0).hasClass('flash')).toBeTruthy();
+        expect(element.children().eq(1).hasClass('flash-messages')).toBeTruthy();
       }));
     });
 
