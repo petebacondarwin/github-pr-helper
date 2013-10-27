@@ -3,7 +3,7 @@
 
   "name": "GitHub PR Helper",
   "description": "View and manage labels in GitHub Pull Request views.",
-  "version": "0.1",
+  "version": "0.1.0",
   "icons": {
     "16": "icon-16.png",
     "48": "icon-48.png",
