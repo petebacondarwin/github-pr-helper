@@ -51,6 +51,13 @@ localStorage.setItem('github.client_id', "....");
 localStorage.setItem('github.client_secret', "....");
 ```
 
+## Known Issues
+GitHub sometimes uses partial reloads to update the page more efficiently.  For instance, when you
+filter the list of PRs by author.  When this happens this extension does not recognise it and so
+you lose the list of labels.  Generally, the extension does not play well with any external changes
+to the HTML in the page, which could also lead to memory leakage. This needs to be sorted out at
+some point.  **The workaround is simply to refresh the page**.
+
 ## Testing
 The tests are stored in the `/tests` folder and are written in Jasmine, using the ngMocks extensions
 to AngularJS.  You run the tests using the [Karma Test Runner](http://karma-runner.github.io/0.10/).
