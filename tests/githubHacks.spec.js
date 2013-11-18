@@ -58,6 +58,17 @@ describe("githubHacks module", function() {
         expect(element.hasClass('ng-terminated')).toBeTruthy();
       }));
     });
+
+    describe('title directive', function() {
+
+      it('should not compile the contents of the title element and add a class', inject(function($compile, $rootScope) {
+        var element = $compile ('<title>{{1 + 2}}</title>')($rootScope);
+        $rootScope.$digest();
+        expect(element.text()).toEqual('{{1 + 2}}');
+        expect(element.hasClass('ng-terminated')).toBeTruthy();
+      }));
+    });
+
   });
 
 });

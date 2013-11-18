@@ -1,20 +1,59 @@
 (function() {
 
+
+function directiveFactory(directiveDefinition) {
+  return function() {
+    return directiveDefinition;
+  };
+}
+
+// This directive injects the flashMessages directive into the DOM
+var addFlashMessageDirective = {
+  restrict: 'C',
+  compile: function(element) {
+    element.prepend(
+      '<div class="flash-messages"></div>'
+    );
+  }
+};
+
+// This directive injects the credentialsForm directive into the DOM
+var addCredentialsDirective = {
+  restrict: 'C',
+  compile: function(element) {
+    element.prepend(
+      '<credentials-form></credentials-form>'
+    );
+  }
+};
+
+// This directive terminates compilation at the given point in the DOM
+// This is useful when text in the DOM might contain what appears to be interpolation
+// or directives as part of its content.
+var terminateCompilationDirective = {
+  restrict: 'C',
+  terminal: true,
+  link: function(scope, element) {
+    element.addClass('ng-terminated');
+  }
+};
+
 angular.module('githubHacks', ['flashMessages', 'credentialsForm'])
 
 // The pullsList and viewPullRequest directives, simply hook into the HTML that is provided by
 // GitHub and inject a flash-messages element
-.directive('pullsList', addFlashMessageDirective)
-.directive('viewPullRequest', addFlashMessageDirective)
-.directive('pullsList', addCredentialsDirective)
-.directive('viewPullRequest', addCredentialsDirective)
+.directive('pullsList', directiveFactory(addFlashMessageDirective))
+.directive('viewPullRequest', directiveFactory(addFlashMessageDirective))
+.directive('pullsList', directiveFactory(addCredentialsDirective))
+.directive('viewPullRequest', directiveFactory(addCredentialsDirective))
 
 
 // We don't want code blocks that appear inside gitHub description and comment field to be compiled
 // so we terminates compilation at the point where these fields appear
-.directive('discussionTimeline', terminateCompilationDirective)
-.directive('diffView', terminateCompilationDirective)
-.directive('commit', terminateCompilationDirective)
+.directive('discussionTimeline', directiveFactory(terminateCompilationDirective))
+.directive('diffView', directiveFactory(terminateCompilationDirective))
+.directive('commit', directiveFactory(terminateCompilationDirective))
+.directive('title', directiveFactory(angular.extend({}, terminateCompilationDirective, { restrict: 'E'})))
 
   
 // GitHub also puts code block containing fields into some <meta> tags, which also needs to be terminated
@@ -62,38 +101,5 @@ angular.module('githubHacks', ['flashMessages', 'credentialsForm'])
     }
   };
 });
-
-function addFlashMessageDirective() {
-  return {
-    restrict: 'C',
-    compile: function(element) {
-      element.prepend(
-        '<div class="flash-messages"></div>'
-      );
-    }
-  };
-}
-
-function addCredentialsDirective() {
-  return {
-    restrict: 'C',
-    compile: function(element) {
-      element.prepend(
-        '<credentials-form></credentials-form>'
-      );
-    }
-  };
-}
-
-function terminateCompilationDirective() {
-  return {
-    restrict: 'C',
-    terminal: true,
-    link: function(scope, element) {
-      element.addClass('ng-terminated');
-    }
-  };
-}
-
 
 })();
