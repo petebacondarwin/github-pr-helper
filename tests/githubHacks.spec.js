@@ -69,6 +69,40 @@ describe("githubHacks module", function() {
       }));
     });
 
+    describe('listGroupItemName directive', function() {
+
+      it('should not compile the contents of the title element and add a class', inject(function($compile, $rootScope) {
+        var element = $compile ('<div class="list-group-item-name">{{1 + 2}}</div>')($rootScope);
+        $rootScope.$digest();
+        expect(element.text()).toEqual('{{1 + 2}}');
+        expect(element.hasClass('ng-terminated')).toBeTruthy();
+      }));
+    });
+
+    describe('listGroupItemSummary directive', function() {
+
+      it('should not compile the contents of the title element and add a class', inject(function($compile, $rootScope) {
+        var element = $compile ('<div class="list-group-item-summary">{{1 + 2}}</div>')($rootScope);
+        $rootScope.$digest();
+        expect(element.text()).toEqual('{{1 + 2}}');
+        expect(element.hasClass('ng-terminated')).toBeTruthy();
+      }));
+    });
+
+  });
+
+  describe('listGroup directive', function() {
+    it('can compile a listGroup that contains items with code in the data-filter attribute', inject(function($compile, $rootScope) {
+      expect(function() {
+        var element = angular.element(
+          '<ul class="list-group">' +
+          '  <li class="list-group-item" data-filter="{{1 + 2}}"></li>' + 
+          '</ul>'
+        );
+        element = $compile(element)($rootScope);
+        expect(element.children().eq(0).attr('data-filter')).toEqual('{{1 + 2}}');
+      }).not.toThrow();
+    }));
   });
 
 });

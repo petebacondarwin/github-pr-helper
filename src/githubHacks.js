@@ -53,7 +53,10 @@ angular.module('githubHacks', ['flashMessages', 'credentialsForm'])
 .directive('discussionTimeline', directiveFactory(terminateCompilationDirective))
 .directive('diffView', directiveFactory(terminateCompilationDirective))
 .directive('commit', directiveFactory(terminateCompilationDirective))
-.directive('title', directiveFactory(angular.extend({}, terminateCompilationDirective, { restrict: 'E'})))
+.directive('title', directiveFactory(
+  angular.extend({}, terminateCompilationDirective, { restrict: 'E'})))
+.directive('listGroupItemName', directiveFactory(terminateCompilationDirective))
+.directive('listGroupItemSummary', directiveFactory(terminateCompilationDirective))
 
   
 // GitHub also puts code block containing fields into some <meta> tags, which also needs to be terminated
@@ -90,13 +93,39 @@ angular.module('githubHacks', ['flashMessages', 'credentialsForm'])
       });
 
       return function postLink(scope, element, attr) {
-        // Add the contents back into the descriptin and og:description meta tags
+        // Add the contents back into the description and og:description meta tags
         if ( descriptionElement ) {
           descriptionElement.attr('content', descriptionContent);
         }
         if ( ogDescriptionElement ) {
           ogDescriptionElement.attr('content', ogDescriptionContent);
         }
+      };
+    }
+  };
+})
+
+// Similar to the meta tags above,  GitHub also puts code blocks into the `data-filter`attribute of
+// list-group-items. So we need to remove this before angular.js tries to compile them;
+.directive('listGroup', function() {
+  return {
+    restrict: 'C',
+    priority: 1000,
+    compile: function(element, attr) {
+      var listGroupItems = [];
+      angular.forEach(element.children(), function(element) {
+        // Wrap the element in jqLite to have access to `attr()` and `hasClass()`
+        element = angular.element(element);
+        if ( element.hasClass('list-group-item')) {
+          listGroupItems.push({ element: element, dataFilterText: element.attr('data-filter')});
+          element.attr('data-filter', '');
+        }
+      });
+
+      return function postLink(scope, element, attr) {
+        angular.forEach(listGroupItems, function(item) {
+          item.element.attr('data-filter', item.dataFilterText);
+        });
       };
     }
   };
