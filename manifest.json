@@ -24,7 +24,6 @@
       "src/githubAPI.js",
       "src/labels.js",
       "src/listGroupItems.js",
-      "src/discussionSidebar.js",
       "src/credentialsForm.js",
       "src/githubHacks.js",
       "src/flashMessages.js",
