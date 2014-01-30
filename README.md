@@ -5,8 +5,8 @@ A Chrome Extension to make the Pull Request view on GitHub nicer
 
 Features include:
 - Display labels on PR list pages
-- Display labels on PR detail pages
-- Manage PR labels on PR detail pages
+- Display labels on PR detail pages (removed as GitHub does this now)
+- Manage PR labels on PR detail pages (removed as Github does this now)
 - Milestones shown on PR list pages
 
 ** Note that as of v0.2.0 the extension uses "*Personal Access Tokens*" to authenticate rather than
