@@ -1,4 +1,8 @@
-# GitHub PR Helper
+# GitHub PR Helper (deprecated)
+
+**Due to recent improvements to the GitHub UI this helper is probably no longer needed.**
+
+**I will not be actively developing or supporting this project going forward**
 
 A Chrome Extension to make the Pull Request view on GitHub nicer
 (no unicorns were harmed to make this extension)
